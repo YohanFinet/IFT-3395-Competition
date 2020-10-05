@@ -16,6 +16,3 @@ class NaiveBayesClassifier:
 
     def compute_predictions(self, conditional_prob, class_prob, test_data):
         pass
-
-#nb = NaiveBayesClassifier('train.csv')
-#print(nb.train_data[:,2])
