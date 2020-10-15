@@ -80,7 +80,7 @@ for doc in docs:
 
 X_train, X_validation, y_train, y_validation = train_test_split(X, y, test_size=0.33, random_state=42)
 
-forest = RandomForestClassifier(max_depth=10)
+forest = RandomForestClassifier(max_depth=7)
 forest.fit(X_train, y_train)
 print(forest.score(X_train, y_train))
 print(forest.score(X_validation, y_validation))
