@@ -25,49 +25,49 @@ tag_map['V'] = wn.VERB
 tag_map['R'] = wn.ADV
 
 for i,doc in enumerate(train['Abstract']):
-    Final_words = []
-    word_Lemmatized = WordNetLemmatizer()
+    processed_words = []
+    lemmatizer = WordNetLemmatizer()
     for word, tag in pos_tag(doc):
         if word not in stopwords.words('english') and word.isalpha():
-            word_Final = word_Lemmatized.lemmatize(word,tag_map[tag[0]])
-            Final_words.append(word_Final)
-    train.loc[i,'Abstract_processed'] = str(Final_words)
+            processed_word = lemmatizer.lemmatize(word,tag_map[tag[0]])
+            processed_words.append(processed_word)
+    train.loc[i,'Abstract_processed'] = str(processed_words)
 
-Train_X, Test_X, Train_Y, Test_Y = model_selection.train_test_split(train['Abstract_processed'],train['Category'],test_size=0.3)
+train_x, test_x, train_y, test_y = model_selection.train_test_split(train['Abstract_processed'],train['Category'],test_size=0.3)
 
-Encoder = LabelEncoder()
-Train_Y = Encoder.fit_transform(Train_Y)
-Test_Y = Encoder.fit_transform(Test_Y)
+encoder = LabelEncoder()
+train_y = encoder.fit_transform(train_y)
+test_y = encoder.fit_transform(test_y)
 
-Tfidf_vect = TfidfVectorizer(max_features=4000)
-Tfidf_vect.fit(train['Abstract_processed'])
-Train_X_Tfidf = Tfidf_vect.transform(Train_X)
-Test_X_Tfidf = Tfidf_vect.transform(Test_X)
+tfidf_vect = TfidfVectorizer(max_features=4000)
+tfidf_vect.fit(train['Abstract_processed'])
+train_x_tfidf = tfidf_vect.transform(train_x)
+test_x_tfidf = tfidf_vect.transform(test_x)
 
 NBM = naive_bayes.MultinomialNB()
-NBM.fit(Train_X_Tfidf,Train_Y)
-predictions_NBM = NBM.predict(Test_X_Tfidf)
-print("Multinomial Naive Bayes Accuracy Score (Validation) -> ",accuracy_score(predictions_NBM, Test_Y)*100)
-predictions_NBM = NBM.predict(Train_X_Tfidf)
-print("Multinomial Naive Bayes Accuracy Score (Train) -> ",accuracy_score(predictions_NBM, Train_Y)*100)
+NBM.fit(train_x_tfidf,train_y)
+predictions_NBM = NBM.predict(test_x_tfidf)
+print("Multinomial Naive Bayes Accuracy Score (Validation) -> ",accuracy_score(predictions_NBM, test_y)*100)
+predictions_NBM = NBM.predict(train_x_tfidf)
+print("Multinomial Naive Bayes Accuracy Score (Train) -> ",accuracy_score(predictions_NBM, train_y)*100)
 
 SVM = svm.SVC(kernel='linear')
-SVM.fit(Train_X_Tfidf,Train_Y)
-predictions_SVM = SVM.predict(Test_X_Tfidf)
-print("SVM Accuracy Score (Validation) -> ",accuracy_score(predictions_SVM, Test_Y)*100)
-predictions_SVM = SVM.predict(Train_X_Tfidf)
-print("SVM Accuracy Score (Train) -> ",accuracy_score(predictions_SVM, Train_Y)*100)
+SVM.fit(train_x_tfidf,train_y)
+predictions_SVM = SVM.predict(test_x_tfidf)
+print("SVM Accuracy Score (Validation) -> ",accuracy_score(predictions_SVM, test_y)*100)
+predictions_SVM = SVM.predict(train_x_tfidf)
+print("SVM Accuracy Score (Train) -> ",accuracy_score(predictions_SVM, train_y)*100)
 
 Forest = RandomForestClassifier(max_depth=7)
-Forest.fit(Train_X_Tfidf, Train_Y)
-score_Forest = Forest.score(Test_X_Tfidf, Test_Y)
+Forest.fit(train_x_tfidf, train_y)
+score_Forest = Forest.score(test_x_tfidf, test_y)
 print("Forest Accuracy Score (Validation) -> ",score_Forest*100)
-score_Forest = Forest.score(Train_X_Tfidf, Train_Y)
+score_Forest = Forest.score(train_x_tfidf, train_y)
 print("Forest Accuracy Score (Train) -> ",score_Forest*100)
 
 MLP = MLPClassifier(hidden_layer_sizes=(100, 5), solver='lbfgs')
-MLP.fit(Train_X_Tfidf, Train_Y)
-score_MLP = MLP.score(Test_X_Tfidf, Test_Y)
+MLP.fit(train_x_tfidf, train_y)
+score_MLP = MLP.score(test_x_tfidf, test_y)
 print("Multi-Layer Perceptron Accuracy Score (Validation) -> ",score_MLP*100)
-score_MLP = MLP.score(Train_X_Tfidf, Train_Y)
+score_MLP = MLP.score(train_x_tfidf, train_y)
 print("Multi-Layer Perceptron Accuracy Score (Train) -> ",score_MLP*100)
