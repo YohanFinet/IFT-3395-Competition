@@ -146,4 +146,4 @@ for i in range(len(matrix_1)):
         if class_accuracy>best_class_accuracy:
             class_number = j
             best_class_accuracy = class_accuracy
-    predict.append([i,n_classes[k]])
+    predict.append([i,n_classes[class_number]])
