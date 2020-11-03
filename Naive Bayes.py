@@ -89,8 +89,8 @@ for i in result_1:
     a=np.zeros(len(vocabulaire_1))
     for j in result_1[i]:
         a=a+j
-    #notre alpha = 0,15 : c le meilleur qu'on a trouvé
-    classes_prob_1.append((a+0.15)/(len(result_1[i])))
+    #notre alpha = 0.1 : c le meilleur qu'on a trouvé
+    classes_prob_1.append((a+0.1)/(len(result_1[i])))
 
     #Trouver les mots qui sont plus fréquents que les autres.  
 #sa probabilité doit étre supérieur au double de tous les probabilités des autres mots
