@@ -3,12 +3,12 @@ import numpy as np
 import pandas as pd
 import string
 import re
-data=pd.read_csv('C:\\Users\\Yassine\\Desktop\\Étude\\3395\\competition\\train.csv', sep=',',header=0).to_numpy()
+data=pd.read_csv(<path_train>, sep=',',header=0).to_numpy()
 n_classes = np.unique(data[:,2])
 n_classes_n = len(n_classes)
 table = str.maketrans(dict.fromkeys(string.punctuation))
 train_data_1 = data
-test_data = pd.read_csv('C:\\Users\\Yassine\\Desktop\\Étude\\3395\\competition\\test.csv', sep=',',header=0).to_numpy()
+test_data = pd.read_csv(<path_test> , sep=',',header=0).to_numpy()
 
 no_word = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', 'your', 'yours', 'yourself', 'yourselves', 'he'
            , 'him', 'his', 'himself', 'she', 'her','hers', 'herself', 'it', 'its', 'itself', 'they', 'them', 'their', 'theirs'
